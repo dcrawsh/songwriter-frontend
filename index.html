@@ -12,8 +12,35 @@
         <link rel="stylesheet" href="">
     </head>
     <body>
-        <div id="song-container">
-            
+        <div class="form-container">
+
+            <form id="create-song-form">
+              <h3>Create a New Song!</h3>
+      
+              <input id='input-name' type="text" name="name" value="" placeholder="Enter your song name..." class="input-text">
+              <br><br>
+              <textarea id='input-lyrics' name="description" rows="8" cols="80" value="" placeholder="Enter your lyrics..."></textarea>
+              <br><br>
+              <input id='input-image' type="text" name="image" value="" placeholder="Enter your song image URL..." class="input-text">
+              <br><br>
+              <input id='input-chords' type="text" name="chords" value="" placeholder="Enter your chords..." class="input-text">
+              <br><br>
+      
+              <p>Choose A category </p>
+              <select id="input-category" name="categories">
+              </select>
+              <br><br>
+      
+              <input id= 'create-button' type="submit" name="submit" value="Create New Song" class="submit">
+            </form>
+      
+          </div>
+        
+        
+        
+        
+            <div id="song-container">
+
         </div>
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
