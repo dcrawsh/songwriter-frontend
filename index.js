@@ -2,7 +2,9 @@ const songEndPoint = "http://localhost:3000/api/v1/songs"
 const categoryEndPoint = "http://localhost:3000/api/v1/categories"
 
 document.addEventListener('DOMContentLoaded', () => {
+    // fetch and load songs GET request
     getSongs();
+    // fetch and load categories GET request
     getCategories();
 
     const createSongForm = document.querySelector("#create-song-form")
@@ -34,17 +36,21 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => response.json())
         .then(song => {
-            const songData = song.data.attributes
-            const songMarkup = `<h3> ${songData.name} </h3
-            <h3> ${songData.lyrics} </h3>
-            <h3> ${songData.chords} </h3`
-
-            document.querySelector("#song-container").innerHTML += songMarkup
-
+            const songData = song.data
+            render(songData)
 
         })
+        .catch(err => console.log(err))
 
        
+    }
+
+    function render(song) {
+        const songMarkup = `<h3> ${song.attributes.name} </h3
+            <h3> ${song.attributes.lyrics} </h3>
+            <h3> ${song.attributes.chords} </h3`
+            document.querySelector("#song-container").innerHTML += songMarkup
+
     }
 
     function getSongs() {
@@ -52,17 +58,11 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(songs => {
             songs.data.forEach(song => {
-                
-            const songMarkup = `<h3> ${song.attributes.name} </h3
-            <h3> ${song.attributes.lyrics} </h3>
-            <h3> ${song.attributes.chords} </h3`
-
-
-
-            document.querySelector("#song-container").innerHTML += songMarkup
-                   
+            render(song)               
         })
-    })}
+        })
+        .catch(err => console.log(err))
+        }
     
     function getCategories() {
         fetch(categoryEndPoint)
