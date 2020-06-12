@@ -45,7 +45,7 @@ class Song {
           
     
           <label>Category</label>
-          <select id="categories" name="categories" value="${this.category.name}">
+          <select id="update-input-category" name="categories" value=${this.category.name}>
 
           </select>
           <br><br>

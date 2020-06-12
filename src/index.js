@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const song = Song.findById(songId)
         document.getElementById('update-song-form').innerHTML = song.renderUpdateForm();
         
+        
     } )
 
     document.getElementById('update-song-form').addEventListener('submit', (e) => updateFormHandler(e))
@@ -66,6 +67,8 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(err => console.log(err))
 
+        getCategories();
+
        
     }
     function patchFetch(name, lyrics, chords, category_id){
@@ -106,6 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(categories => {
             categories.data.forEach(category => {
+            
+            let newCategory = new Category(category)
             const categoryMarkup = `<option value=${category.id}>${category.attributes.name}</option>`
 
 
