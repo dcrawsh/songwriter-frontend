@@ -18,9 +18,13 @@ document.addEventListener('DOMContentLoaded', () => {
     songContainer.addEventListener("click", (e) => {
         const songId = e.target.dataset.id
         const song = Song.findById(songId)
-        document.querySelector('#update-song').innerHTML = song.renderUpdateForm();
+        document.getElementById('update-song-form').innerHTML = song.renderUpdateForm();
+        
     } )
 
+    document.getElementById('update-song-form').addEventListener('submit', (e) => updateFormHandler(e))
+
+    
 
 })
 
@@ -28,15 +32,23 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault()
         const nameInput = document.querySelector('#input-name').value;
         const lyricsInput = document.querySelector('#input-lyrics').value;
-        const imageInput = document.querySelector('#input-image').value;
         const chordsInput = document.querySelector('#input-chords').value;
         const categoryId = parseInt(document.querySelector('#input-category').value);
         
-        postFetch(nameInput,lyricsInput,imageInput,chordsInput,categoryId)   
+        postFetch(nameInput,lyricsInput,chordsInput,categoryId)   
+    }
+    function updateFormHandler(e) {
+        e.preventDefault()
+        const nameInput = document.querySelector('#input-name').value;
+        const lyricsInput = document.querySelector('#input-lyrics').value;
+        const chordsInput = document.querySelector('#input-chords').value;
+        const categoryId = parseInt(document.querySelector('#input-category').value);
+        
+        postFetch(nameInput,lyricsInput,chordsInput,categoryId)   
     }
 
-    function postFetch(name, lyrics, image_url, chords, category_id){
-        const bodyData = {name, lyrics, image_url, chords, category_id}
+    function postFetch(name, lyrics, chords, category_id){
+        const bodyData = {name, lyrics, chords, category_id}
         
         fetch(songEndPoint, {
             method: "POST",
@@ -51,6 +63,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
             document.querySelector('#song-container').innerHTML += newSong.renderSongCard()
 
+        })
+        .catch(err => console.log(err))
+
+       
+    }
+    function patchFetch(name, lyrics, chords, category_id){
+        const bodyData = {name, lyrics, chords, category_id}
+        
+        fetch(`http://localhost:3000/api/v1/songs/${song.id}`, {
+            method: "PATCH",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(bodyData)
+        })
+        .then(response => response.json())
+        .then(song => {
+            console.log(song)
         })
         .catch(err => console.log(err))
 

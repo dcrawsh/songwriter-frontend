@@ -6,7 +6,6 @@ class Song {
       this.name = songAttributes.name;
       this.lyrics = songAttributes.lyrics;
       this.chords = songAttributes.chords;
-      this.image_url = songAttributes.image_url;
       this.category = songAttributes.category;
       Song.all.push(this);
     }
@@ -25,6 +24,8 @@ class Song {
     }
 
     renderUpdateForm() {
+        let createSongForm = document.getElementById('create-song-form')
+        createSongForm.style.display="none";
         return `
         <form data-id=${this.id} >
           <h3>Edit Song</h3>
@@ -35,10 +36,6 @@ class Song {
     
           <label>Lyrics</label>
           <textarea id='input-lyrics' name="lyrics" rows="8" cols="80" value="">${this.lyrics}</textarea>
-          <br><br>
-    
-          <label>Image URL</label>
-          <input id='input-url' type="text" name="image" value="${this.image_url}" class="input-text">
           <br><br>
 
           <label>Chords</label>
@@ -53,7 +50,7 @@ class Song {
           </select>
           <br><br>
     
-          <input id='edit-button' type="submit" name="submit" value="Edit Syllabus" class="submit">
+          <input id='edit-button' type="submit" name="submit" value="Edit Song" class="submit">
         </form>
       `;
       }
