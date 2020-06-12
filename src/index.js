@@ -8,11 +8,20 @@ document.addEventListener('DOMContentLoaded', () => {
     getCategories();
 
     const createSongForm = document.querySelector("#create-song-form")
-
+    const songContainer = document.querySelector('#song-container')
+    
     createSongForm.addEventListener("submit", (e) => {
         createFormHandler(e)
         
     })
+
+    songContainer.addEventListener("click", (e) => {
+        const songId = e.target.dataset.id
+        const song = Song.findById(songId)
+        document.querySelector('#update-song').innerHTML = song.renderUpdateForm();
+    } )
+
+
 })
 
     function createFormHandler(e) {
@@ -36,8 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => response.json())
         .then(song => {
+            
             const songData = song.data
-            render(songData)
+            let newSong = new Song(songData, songData.attributes)
+
+            document.querySelector('#song-container').innerHTML += newSong.renderSongCard()
 
         })
         .catch(err => console.log(err))
@@ -45,24 +57,21 @@ document.addEventListener('DOMContentLoaded', () => {
        
     }
 
-    function render(song) {
-        const songMarkup = `<h3> ${song.attributes.name} </h3
-            <h3> ${song.attributes.lyrics} </h3>
-            <h3> ${song.attributes.chords} </h3`
-            document.querySelector("#song-container").innerHTML += songMarkup
-
-    }
-
     function getSongs() {
         fetch(songEndPoint)
         .then(response => response.json())
         .then(songs => {
-            songs.data.forEach(song => {
-            render(song)               
+          songs.data.forEach(song => {
+            // double check how your data is nested in the console so you can successfully access the attributes of each individual object
+            
+        
+            let newSong = new Song(song, song.attributes)
+      
+            document.querySelector('#song-container').innerHTML += newSong.renderSongCard()
+          })
+        // .catch(err => console.log(err))
         })
-        })
-        .catch(err => console.log(err))
-        }
+      }
     
     function getCategories() {
         fetch(categoryEndPoint)
