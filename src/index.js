@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const songId = e.target.dataset.id
         const song = Song.findById(songId)
         document.getElementById('update-song-form').innerHTML = song.renderUpdateForm();
+        getCategories();
         
         
     } )
@@ -40,22 +41,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     function updateFormHandler(e) {
         e.preventDefault()
-        const nameInput = document.querySelector('#input-name').value;
-        const lyricsInput = document.querySelector('#input-lyrics').value;
-        const chordsInput = document.querySelector('#input-chords').value;
-        const categoryId = parseInt(document.querySelector('#input-category').value);
+        const id = parseInt(e.target.dataset.id);
+        const nameInput = document.querySelector('#update-input-name').value;
+        const lyricsInput = document.querySelector('#update-input-lyrics').value;
+        const chordsInput = document.querySelector('#update-input-chords').value;
+        const categoryId = parseInt(document.querySelector('#update-input-category').value);
         
-        postFetch(nameInput,lyricsInput,chordsInput,categoryId)   
+        patchFetch(nameInput,lyricsInput,chordsInput,categoryId,id)   
     }
 
     function postFetch(name, lyrics, chords, category_id){
-        const bodyData = {name, lyrics, chords, category_id}
+        let formData = {name, lyrics, chords, category_id}
         
-        fetch(songEndPoint, {
+        let configObj = {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(bodyData)
-        })
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify(formData)
+        }
+        fetch(songEndPoint, configObj)
         .then(response => response.json())
         .then(song => {
             
@@ -63,18 +69,16 @@ document.addEventListener('DOMContentLoaded', () => {
             let newSong = new Song(songData, songData.attributes)
 
             document.querySelector('#song-container').innerHTML += newSong.renderSongCard()
+            
 
         })
         .catch(err => console.log(err))
-
-        getCategories();
-
-       
     }
-    function patchFetch(name, lyrics, chords, category_id){
+    
+    function patchFetch(name, lyrics, chords, category_id, id){
         const bodyData = {name, lyrics, chords, category_id}
         
-        fetch(`http://localhost:3000/api/v1/songs/${song.id}`, {
+        fetch(`http://localhost:3000/api/v1/songs/${id}`, {
             method: "PATCH",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(bodyData)
@@ -85,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(err => console.log(err))
 
+        
        
     }
 
@@ -112,10 +117,14 @@ document.addEventListener('DOMContentLoaded', () => {
             
             let newCategory = new Category(category)
             const categoryMarkup = `<option value=${category.id}>${category.attributes.name}</option>`
-
-
-
+            
+            if(document.getElementById('update-input-category')){
+                document.getElementById('update-input-category').innerHTML += categoryMarkup
+                
+            }
+            else {
             document.querySelector("#input-category").innerHTML += categoryMarkup
+            }
                 
             
             

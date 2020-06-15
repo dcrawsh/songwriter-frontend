@@ -15,9 +15,9 @@ class Song {
     return `
               <div data-id=${this.id}>
                 <h3>${this.name}</h3>
-                <h3>${this.lyrics}</h3>
-                <h3>${this.chords}</h3>
-                <p>${this.category.name}</p>
+                <p class="lead" class="text-justify">${this.lyrics}</p>
+                <h4>${this.chords}</h4>
+                <p><em>${this.category.name}</em></p>
                 <button data-id=${this.id}>edit</button>
               </div>
               <br><br>`;
@@ -31,21 +31,21 @@ class Song {
           <h3>Edit Song</h3>
     
           <label>Name</label>
-          <input id='input-name' type="text" name="name" value="${this.name}" class="input-text">
+          <input id='update-input-name' type="text" name="name" value="${this.name}" class="input-text">
           <br><br>
     
           <label>Lyrics</label>
-          <textarea id='input-lyrics' name="lyrics" rows="8" cols="80" value="">${this.lyrics}</textarea>
+          <textarea id='update-input-lyrics' name="lyrics" rows="8" cols="80" value="">${this.lyrics}</textarea>
           <br><br>
 
           <label>Chords</label>
-          <textarea id='input-chords' name="chords" rows="8" cols="80" value="">${this.chords}</textarea>
+          <textarea id='update-input-chords' name="chords" rows="8" cols="80" value="">${this.chords}</textarea>
           <br><br>
     
           
     
           <label>Category</label>
-          <select id="update-input-category" name="categories" value=${this.category.name}>
+          <select id="update-input-category" name="category_id" value=${this.category.id} default=>
 
           </select>
           <br><br>
