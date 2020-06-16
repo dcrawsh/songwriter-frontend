@@ -76,13 +76,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function patchFetch(name, lyrics, chords, category_id, id){
-        const bodyData = {name, lyrics, chords, category_id}
-        
-        fetch(`http://localhost:3000/api/v1/songs/${id}`, {
+        let formData = {name, lyrics, chords, category_id}
+
+        let configObj = {
             method: "PATCH",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(bodyData)
-        })
+            body: JSON.stringify(formData)
+        }
+        
+        fetch(`http://localhost:3000/api/v1/songs/${id}`, configObj)
         .then(response => response.json())
         .then(song => {
             console.log(song)
