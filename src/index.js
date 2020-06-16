@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const createSongForm = document.querySelector("#create-song-form")
     const songContainer = document.querySelector('#song-container')
     
+    
     createSongForm.addEventListener("submit", (e) => {
         createFormHandler(e)
         
@@ -18,13 +19,25 @@ document.addEventListener('DOMContentLoaded', () => {
     songContainer.addEventListener("click", (e) => {
         const songId = e.target.dataset.id
         const song = Song.findById(songId)
+        if (e.target.id == 'edit-btn') {
+        console.log('edit')
         document.getElementById('update-song-form').innerHTML = song.renderUpdateForm();
-        getCategories();
+        getCategories()
+        }
+        else if (e.target.id == 'delete-btn'){
+        console.log('delete')
+        deleteFetch(songId)
+        getSongs()
+        }
         
         
     } )
+    
 
-    document.getElementById('update-song-form').addEventListener('submit', (e) => updateFormHandler(e))
+    document.getElementById('update-song-form').addEventListener('submit', (e) => {
+        updateFormHandler(e)
+        getSongs()
+    })
 
     
 
@@ -48,6 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const categoryId = parseInt(document.querySelector('#update-input-category').value);
         
         patchFetch(nameInput,lyricsInput,chordsInput,categoryId,id)   
+        getSongs()
     }
 
     function postFetch(name, lyrics, chords, category_id){
@@ -89,13 +103,26 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(song => {
             console.log(song)
         })
-        .catch(err => console.log(err))
-
+        .catch(err => console.log(err))  
+    }
+    
+    function deleteFetch(id){
         
-       
+        let configObj = {
+            method: "DELETE",
+            headers: {"Content-Type": "application/json"}
+        }
+        
+        fetch(`http://localhost:3000/api/v1/songs/${id}`, configObj)
+        .then(response => response.json())
+        .then(song => {
+            console.log(song)
+        })
+        .catch(err => console.log(err))  
     }
 
     function getSongs() {
+        document.querySelector('#song-container').innerHTML = ''
         fetch(songEndPoint)
         .then(response => response.json())
         .then(songs => {

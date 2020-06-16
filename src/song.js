@@ -18,7 +18,8 @@ class Song {
                 <p class="lead" class="text-justify">${this.lyrics}</p>
                 <h4>${this.chords}</h4>
                 <p><em>${this.category.name}</em></p>
-                <button data-id=${this.id}>edit</button>
+                <button id="edit-btn" data-id=${this.id}>edit</button>
+                <button id="delete-btn" data-id=${this.id}>delete</button>
               </div>
               <br><br>`;
     }
