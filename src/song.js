@@ -13,7 +13,7 @@ class Song {
     renderSongCard() {
     
     return `
-              <div data-id=${this.id}>
+              <div data-id=${this.id} class='song-item'>
                 <h3>${this.name}</h3>
                 <p class="lead" class="text-justify">${this.lyrics}</p>
                 <h4>${this.chords}</h4>
@@ -60,7 +60,14 @@ class Song {
     static findById(id) {
         return this.all.find(song => song.id == id)
     }
+
+    static sortSongs(songs) {
+      const sortedNames = songs.sort((first,second) => first.attributes.name.toUpperCase() > second.attributes.name.toUpperCase() ? 1:-1)
+      return sortedNames
+    }
   }
+
+
 
     
   
